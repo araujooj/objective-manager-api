@@ -10,6 +10,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TodoPriority {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum TodoSize {
+  BIG
+  MEDIUM
+  SMALL
+}
+
+enum TodoStatus {
+  TODO
+  IN_PROGRESS
+  COMPLETED
+  STUCK
+}
+
+enum FluxTitles {
+  CLIMBING_THE_MOUNTAIN
+  SLOW_BURN
+  EAT_THAT_FROG
+}
+
+enum PackageFocusType {
+  LIGHT
+  MEDIUM
+  HEAVY
+}
+
 model Inbox {
   id        String   @id @default(uuid())
   title     String
@@ -20,26 +51,33 @@ model Inbox {
   Okr       Okr[]
 }
 
-enum TodoPriority {
-  HIGH
-  MEDIUM
-  LOW
+model Package {
+  id        String           @id @default(uuid())
+  title     String
+  focusType PackageFocusType
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
-enum TodoStatus {
-  TODO
-  IN_PROGRESS
-  COMPLETED
-  STUCK
+model Flux {
+  id          String     @id @default(uuid())
+  title       FluxTitles @default(EAT_THAT_FROG)
+  description String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
+
+// Inbox > Package > Flux > Todo
 
 model Todo {
-  id              String       @id @default(uuid())
-  title           String
-  priority        TodoPriority @default(HIGH)
-  due_date        DateTime     @default(now())
-  necessary_hours Int
-  status          TodoStatus   @default(TODO)
+  id             String       @id @default(uuid())
+  title          String
+  priority       TodoPriority @default(HIGH)
+  dueDate        DateTime     @default(now())
+  necessaryHours Decimal      @db.Decimal(9, 2)
+  status         TodoStatus   @default(TODO)
 
   inbox   Inbox  @relation(fields: [inboxId], references: [id])
   inboxId String
@@ -49,11 +87,11 @@ model Todo {
 }
 
 model Okr {
-  id              String   @id @default(uuid())
-  title           String
-  start_date      DateTime @default(now())
-  end_date        DateTime
-  necessary_hours Int
+  id             String   @id @default(uuid())
+  title          String
+  startDate      DateTime @default(now())
+  endDate        DateTime
+  necessaryHours Int
 
   inbox   Inbox  @relation(fields: [inboxId], references: [id])
   inboxId String
