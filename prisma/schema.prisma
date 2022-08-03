@@ -16,12 +16,6 @@ enum TodoPriority {
   LOW
 }
 
-enum TodoSize {
-  BIG
-  MEDIUM
-  SMALL
-}
-
 enum TodoStatus {
   TODO
   IN_PROGRESS
@@ -44,6 +38,7 @@ enum PackageFocusType {
 model Inbox {
   id        String   @id @default(uuid())
   title     String
+  userId    String
   link      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -55,21 +50,25 @@ model Package {
   id        String           @id @default(uuid())
   title     String
   focusType PackageFocusType
+  userId    String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+
+  Todo Todo[]
 }
 
 model Flux {
   id          String     @id @default(uuid())
   title       FluxTitles @default(EAT_THAT_FROG)
-  description String
+  description String?
+  userId      String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
 
-// Inbox > Package > Flux > Todo
+// Inbox > Todo > Package > Flux  > Focus
 
 model Todo {
   id             String       @id @default(uuid())
@@ -81,6 +80,13 @@ model Todo {
 
   inbox   Inbox  @relation(fields: [inboxId], references: [id])
   inboxId String
+  userId  String
+
+  okr   Okr?    @relation(fields: [okrId], references: [id])
+  okrId String?
+
+  package   Package? @relation(fields: [packageId], references: [id])
+  packageId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -95,7 +101,9 @@ model Okr {
 
   inbox   Inbox  @relation(fields: [inboxId], references: [id])
   inboxId String
+  userId  String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  Todo      Todo[]
 }
