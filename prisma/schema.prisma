@@ -38,37 +38,13 @@ enum PackageFocusType {
 model Inbox {
   id        String   @id @default(uuid())
   title     String
-  userId    String
+  userId    String   @unique
   link      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   Todo      Todo[]
   Okr       Okr[]
 }
-
-model Package {
-  id        String           @id @default(uuid())
-  title     String
-  focusType PackageFocusType
-  userId    String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-
-  Todo Todo[]
-}
-
-model Flux {
-  id          String     @id @default(uuid())
-  title       FluxTitles @default(EAT_THAT_FROG)
-  description String?
-  userId      String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-}
-
-// Inbox > Todo > Package > Flux  > Focus
 
 model Todo {
   id             String       @id @default(uuid())
@@ -80,7 +56,7 @@ model Todo {
 
   inbox   Inbox  @relation(fields: [inboxId], references: [id])
   inboxId String
-  userId  String
+  userId  String @unique
 
   okr   Okr?    @relation(fields: [okrId], references: [id])
   okrId String?
@@ -92,6 +68,30 @@ model Todo {
   updatedAt DateTime @default(now())
 }
 
+model Package {
+  id        String           @id @default(uuid())
+  title     String
+  focusType PackageFocusType
+  userId    String           @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  Todo Todo[]
+}
+
+model Flux {
+  id          String     @id @default(uuid())
+  title       FluxTitles @default(EAT_THAT_FROG)
+  description String?
+  userId      String     @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+// Inbox > Todo > Package > Flux  > Focus
+
 model Okr {
   id             String   @id @default(uuid())
   title          String
@@ -101,7 +101,7 @@ model Okr {
 
   inbox   Inbox  @relation(fields: [inboxId], references: [id])
   inboxId String
-  userId  String
+  userId  String @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
