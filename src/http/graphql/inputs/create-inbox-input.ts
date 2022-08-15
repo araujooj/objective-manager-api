@@ -5,6 +5,8 @@ export class CreateInboxInput {
   @Field()
   title: string;
 
-  @Field()
+  @Field({
+    nullable: true,
+  })
   link?: string;
 }

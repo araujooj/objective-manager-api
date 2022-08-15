@@ -10,6 +10,6 @@ export class Inbox {
   @Field(() => String)
   title: string;
 
-  @Field(() => String)
-  link?: string;
+  @Field(() => String!)
+  link?: string | null;
 }

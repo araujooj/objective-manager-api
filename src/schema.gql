@@ -28,5 +28,5 @@ type Mutation {
 
 input CreateInboxInput {
   title: String!
-  link: String!
+  link: String
 }

@@ -23,7 +23,7 @@ enum TodoStatus {
   STUCK
 }
 
-enum FluxTitles {
+enum FlowTitles {
   CLIMBING_THE_MOUNTAIN
   SLOW_BURN
   EAT_THAT_FROG
@@ -72,10 +72,12 @@ model Todo {
 
 // Limpar o meu ambiente
 model Package {
-  id        String           @id @default(uuid())
-  title     String
-  focusType PackageFocusType
-  userId    String           @unique
+  id     String @id @default(uuid())
+  title  String
+  userId String @unique
+
+  flow   Flow?   @relation(fields: [flowId], references: [id])
+  flowId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -83,18 +85,19 @@ model Package {
   Todo Todo[]
 }
 
-// 3 pacotes, escolho fluxo
-model Flux {
+// 3 pacotes, escolho flowo
+model Flow {
   id          String     @id @default(uuid())
-  title       FluxTitles @default(EAT_THAT_FROG)
+  title       FlowTitles @default(EAT_THAT_FROG)
   description String?
   userId      String     @unique
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  Package   Package[]
 }
 
-// Inbox > Todo > Package > Flux  > Focus
+// Inbox > Todo > Package > Flow  > Focus
 
 model Okr {
   id             String   @id @default(uuid())
