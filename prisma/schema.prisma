@@ -35,10 +35,11 @@ enum PackageFocusType {
   HEAVY
 }
 
+// Dev, Rpg, Life, Health 
 model Inbox {
   id        String   @id @default(uuid())
   title     String
-  userId    String   @unique
+  userId    String
   link      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -46,6 +47,7 @@ model Inbox {
   Okr       Okr[]
 }
 
+// Limpar minha mesa, lavar as louças
 model Todo {
   id             String       @id @default(uuid())
   title          String
@@ -56,7 +58,7 @@ model Todo {
 
   inbox   Inbox  @relation(fields: [inboxId], references: [id])
   inboxId String
-  userId  String @unique
+  userId  String
 
   okr   Okr?    @relation(fields: [okrId], references: [id])
   okrId String?
@@ -68,6 +70,7 @@ model Todo {
   updatedAt DateTime @default(now())
 }
 
+// Limpar o meu ambiente
 model Package {
   id        String           @id @default(uuid())
   title     String
@@ -80,6 +83,7 @@ model Package {
   Todo Todo[]
 }
 
+// 3 pacotes, escolho fluxo
 model Flux {
   id          String     @id @default(uuid())
   title       FluxTitles @default(EAT_THAT_FROG)

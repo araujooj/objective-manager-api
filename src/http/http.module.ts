@@ -6,9 +6,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'node:path';
+import { InboxService } from 'src/services/inbox.service';
 
 import { DatabaseModule } from '../database/database.module';
-import { TestResolver } from './graphql/resolvers/test.resolver';
+import { InboxResolver } from './graphql/resolvers/inbox.resolver';
 
 @Module({
   imports: [
@@ -20,6 +21,11 @@ import { TestResolver } from './graphql/resolvers/test.resolver';
       plugins: [],
     }),
   ],
-  providers: [TestResolver],
+  providers: [
+    // RESOLVERS
+    InboxResolver,
+    // SERVICES
+    InboxService,
+  ],
 })
 export class HttpModule {}

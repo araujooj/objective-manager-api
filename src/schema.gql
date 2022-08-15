@@ -12,6 +12,21 @@ directive @requires(fields: String!) on FIELD_DEFINITION
 
 directive @provides(fields: String!) on FIELD_DEFINITION
 
+type Inbox {
+  id: ID!
+  title: String!
+  link: String!
+}
+
 type Query {
-  hello: String!
+  inboxes: [Inbox!]!
+}
+
+type Mutation {
+  createInbox(data: CreateInboxInput!): Inbox!
+}
+
+input CreateInboxInput {
+  title: String!
+  link: String!
 }
