@@ -18,12 +18,15 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@/graphql/*": [
+      "@graphql/*": [
         "./src/http/graphql"
       ],
-      "@/auth/*": [
+      "@auth/*": [
         "./src/http/auth"
       ],
+      "@services/*": [
+        "./src/http/services"
+      ]
     }
   }
 }

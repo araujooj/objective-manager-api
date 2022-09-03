@@ -1,8 +1,8 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { AuthorizationGuard } from 'src/http/auth/authorization.guard';
-import { AuthUser, CurrentUser } from 'src/http/auth/current-user';
-import { InboxService } from 'src/services/inbox.service';
+import { AuthorizationGuard } from '../../../http/auth/authorization.guard';
+import { AuthUser, CurrentUser } from '../../../http/auth/current-user';
+import { InboxService } from '../../../services/inbox.service';
 import { CreateInboxInput } from '../inputs/create-inbox-input';
 import { Inbox } from '../models/inbox';
 

@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { Cache } from 'cache-manager';
 import { PrismaService } from '../database/prisma/prisma.service';
 
 interface CreateInboxService {
@@ -9,9 +10,14 @@ interface CreateInboxService {
 
 @Injectable()
 export class InboxService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) {}
 
-  getInboxesByUserId(userId: string) {
+  async getInboxesByUserId(userId: string) {
+    await this.cacheManager.reset();
+
     return this.prisma.inbox.findMany({
       where: {
         userId,

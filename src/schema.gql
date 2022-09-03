@@ -18,15 +18,97 @@ type Inbox {
   link: String!
 }
 
+type Okr {
+  id: ID!
+  title: String!
+  startDate: DateTime!
+  endDate: DateTime!
+  necessaryHours: Float!
+  createdAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Flow {
+  id: ID!
+  title: String!
+  description: String!
+  createdAt: DateTime!
+  packages: [Package!]!
+}
+
+type Package {
+  id: ID!
+  title: String!
+  startDate: DateTime!
+  endDate: DateTime!
+  necessaryHours: Float!
+  flow: Flow!
+  createdAt: DateTime!
+}
+
+type Todo {
+  id: ID!
+  title: String!
+  priority: TodoPriority!
+  status: TodoStatus!
+  dueDate: DateTime!
+  necessaryHours: Float!
+  createdAt: DateTime!
+  okr: Okr!
+  package: Package!
+}
+
+"""Available todos priority"""
+enum TodoPriority {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+"""Available todos statuses"""
+enum TodoStatus {
+  TODO
+  IN_PROGRESS
+  COMPLETED
+  STUCK
+}
+
+type Thought {
+  id: ID!
+  content: String!
+}
+
 type Query {
   inboxes: [Inbox!]!
+  todos: [Todo!]!
 }
 
 type Mutation {
   createInbox(data: CreateInboxInput!): Inbox!
+  createTodo(data: CreateTodoInput!): Todo!
+  createThought(data: CreateThoughtInput!): Thought!
 }
 
 input CreateInboxInput {
   title: String!
   link: String
+}
+
+input CreateTodoInput {
+  title: String!
+  status: String
+  priority: String
+  dueDate: DateTime!
+  inboxId: String!
+  necessaryHours: Float!
+  okrId: String
+  packageId: String
+}
+
+input CreateThoughtInput {
+  content: String!
 }
